@@ -1,6 +1,0 @@
-%% Data cleaning - cleaning.m
-% Smoothing signal by mean of a smoothing filter (Savitzky-Golay Filter)
-% sgolayfilt(X,K,F): F=15, so to not be greater than signal piece
-
-clear smoothA 
-smoothA = sgolayfilt(A,3,15);

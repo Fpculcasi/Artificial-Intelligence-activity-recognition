@@ -1,10 +1,10 @@
 %% Data initialization - init.m
-% - Data are grouped by activity/position and collected in a structure
+% - Data are grouped by activity/position and collected in a structure.
 
-% This variable disable plots, so to fast computations
+% This variable disable plots, so to fast computations.
 showPlots = false;
 
-% Neglect first row, it's just a row of zeros for every activity
+% Neglect first row, it's just a row of zeros for every activity.
 supine = {V01A(2:end,:), V02A(2:end,:), V03A(2:end,:), V04A(2:end,:),...
     V05A(2:end,:), V06A(2:end,:), V07A(2:end,:), V08A(2:end,:), ...
     V09A(2:end,:), V10A(2:end,:)};
@@ -21,7 +21,7 @@ stair = {V01D(2:end,:), V02D(2:end,:), V03D(2:end,:), V04D(2:end,:),...
     V05D(2:end,:), V06D(2:end,:), V07D(2:end,:), V08D(2:end,:), ...
     V09D(2:end,:), V10D(2:end,:)};
 
-% Build the structure
+% Build the structure.
 Struct = struct('supine',supine,'dorsiflexion',dorsiflexion,'walking',...
     walking,'stair',stair);
 
@@ -31,7 +31,7 @@ Struct = struct('supine',supine,'dorsiflexion',dorsiflexion,'walking',...
 
 for i=1:10
     % - Create a new signal as the sum of the three existing components and
-    %   append at the other components
+    %   append at the other components.
     Struct(i).supine = ...
         [Struct(i).supine(:,4), Struct(i).supine(:,1:3), sum(Struct(i).supine(:,1:3),2)];
     Struct(i).dorsiflexion = ...
@@ -42,9 +42,10 @@ for i=1:10
         [Struct(i).stair(:,4), Struct(i).stair(:,1:3), sum(Struct(i).stair(:,1:3),2)];
  
     % - Plot of each volunteer's activity/position signal and boxplot
-    %   to better show patterns, time features, probability distribution
+    %   to better show patterns, time features, probability distribution.
     if showPlots
-        figure('units','normalized','outerposition',[0 0 1 1]); % full screen
+        % full screen figure
+        figure('units','normalized','outerposition',[0 0 1 1]);
     
         subplot(2,3,1);
         plot(Struct(i).supine(:,1),Struct(i).supine(:,2:5));
