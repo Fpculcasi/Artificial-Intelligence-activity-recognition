@@ -19,25 +19,13 @@ featuresD = [max(smoothD); min(smoothD); skewness(smoothD); ...
 %% TODO: Autocorrelation
 % computed at lags 0,1,2, ... T= min[20,length(y)-1]
 clear RxxA;
-RxxA = autocorr(smoothA(:,1));
-for k=2:size(smoothA,2)
-    RxxA = [RxxA autocorr(smoothA(:,k))];
-end
+RxxA = my_autocorr(smoothA); % See my_autocorr.m
 clear RxxB;
-RxxB = autocorr(smoothB(:,1));
-for k=2:size(smoothB,2)
-    RxxB = [RxxB autocorr(smoothB(:,k))];
-end
+RxxB = my_autocorr(smoothB);
 clear RxxC;
-RxxC = autocorr(smoothC(:,1));
-for k=2:size(smoothC,2)
-    RxxC = [RxxC autocorr(smoothC(:,k))];
-end
+RxxC = my_autocorr(smoothC);
 clear RxxD;
-RxxD = autocorr(smoothD(:,1));
-for k=2:size(smoothD,2)
-    RxxD = [RxxD autocorr(smoothD(:,k))];
-end
+RxxD = my_autocorr(smoothD);
 
 if showPlots
     figure, plot(1:size(RxxA),RxxA);
@@ -45,6 +33,11 @@ if showPlots
     figure, plot(1:size(RxxA),RxxC);
     figure, plot(1:size(RxxA),RxxD);
 end
+
+featuresA = [featuresA; RxxA];
+featuresB = [featuresB; RxxB];
+featuresC = [featuresC; RxxC];
+featuresD = [featuresD; RxxD];
 
 %% Frequential features:
 % - Fundamental frequency f0
@@ -54,25 +47,10 @@ end
 f = 12.2*(0:N(index)/2-1);
 
 % Compute the single-sided spectrum
-fftA = fft(smoothA);
-fftA = abs(fftA./N(index));
-fftA(N(index)/2+1:end, :) = [];
-fftA= 2.*fftA;
-
-fftB = fft(smoothB);
-fftB = abs(fftB./N(index));
-fftB(N(index)/2+1:end, :) = [];
-fftB= 2.*fftB;
-
-fftC = fft(smoothC);
-fftC = abs(fftC./N(index));
-fftC(N(index)/2+1:end, :) = [];
-fftC= 2.*fftC;
-
-fftD = fft(smoothD);
-fftD = abs(fftD./N(index));
-fftD(N(index)/2+1:end, :) = [];
-fftD= 2.*fftD;
+fftA = my_fft(smoothA); % See my_fft.m
+fftB = my_fft(smoothB);
+fftC = my_fft(smoothC);
+fftD = my_fft(smoothD);
 
 % The max amplitude should be a good approximation for the fundamental
 % frequency
@@ -89,10 +67,10 @@ featuresA = [featuresA' f(x)' PSD']';
 
 clear x;
 [~, x] = max(fftB);
-featuresB = [featuresB' f(x)' sum(fftB.^2)']';
+featuresB = [featuresB; f(x); sum(fftB.^2)];
 clear x;
 [~, x] = max(fftC); 
-featuresC = [featuresC' f(x)' sum(fftC.^2)']';
+featuresC = [featuresC; f(x); sum(fftC.^2)];
 clear x;
 [~, x] = max(fftD); 
-featuresD = [featuresD' f(x)' sum(fftD.^2)']';
+featuresD = [featuresD; f(x); sum(fftD.^2)];
