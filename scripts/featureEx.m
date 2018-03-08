@@ -74,3 +74,12 @@ featuresC = [featuresC; f(x); sum(fftC.^2)];
 clear x;
 [~, x] = max(fftD); 
 featuresD = [featuresD; f(x); sum(fftD.^2)];
+
+%% Rotate matrix
+% Since we use 4 columns to represent 3 sensor signals + 1 "virtual" sensor
+% (the sum), we move all the features of the same piece of signal on the same
+% column.
+newFeaturesA = rotate_features(featuresA);
+newFeaturesB = rotate_features(featuresB);
+newFeaturesC = rotate_features(featuresC);
+newFeaturesD = rotate_features(featuresD);
