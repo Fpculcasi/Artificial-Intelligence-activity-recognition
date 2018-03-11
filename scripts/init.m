@@ -1,5 +1,7 @@
-%% Data initialization - init.m
+%% 01 Data initialization - init.m
 % - Data are grouped by activity/position and collected in a structure.
+addpath('gitProjects/intelligent-system/');
+load('ProjectWS.mat');
 
 % This variable disable plots, so to fast computations.
 showPlots = false;

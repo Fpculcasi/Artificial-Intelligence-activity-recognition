@@ -1,4 +1,4 @@
-%% Data splitting - split.m
+%% 02 Data splitting - split.m
 % - We need to split every signal to find out the least temporal interval
 %   that is necessary and sufficient to recognize the position/activity.
 

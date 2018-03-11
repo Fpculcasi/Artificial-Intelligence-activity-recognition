@@ -1,4 +1,4 @@
-%% Data cleaning - cleaning.m
+%% 03 Data cleaning - cleaning.m
 % Clean the signal from noise by mean of a smoothing filter
 % (Savitzky-Golay Filter), sgolayfilt(X,K,F):
 %  - K=3, third-order polynomial;

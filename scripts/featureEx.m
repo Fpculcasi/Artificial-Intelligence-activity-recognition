@@ -1,4 +1,4 @@
-%% Feature extraction - featureEx.m
+%% 04 Feature extraction - featureEx.m
 % Obtain a set of temporal feature starting from the N(j) samples of the
 % signal.
 clear fftA fftB fftC fftD;
@@ -34,10 +34,11 @@ if showPlots
     figure, plot(1:size(RxxA),RxxD);
 end
 
-featuresA = [featuresA; RxxA];
-featuresB = [featuresB; RxxB];
-featuresC = [featuresC; RxxC];
-featuresD = [featuresD; RxxD];
+% first value, autocorr with lags=0, is always equal to 1 (it's irrelevant)
+featuresA = [featuresA; RxxA(2:end,:)];
+featuresB = [featuresB; RxxB(2:end,:)];
+featuresC = [featuresC; RxxC(2:end,:)];
+featuresD = [featuresD; RxxD(2:end,:)];
 
 %% Frequential features:
 % - Fundamental frequency f0
@@ -47,14 +48,21 @@ featuresD = [featuresD; RxxD];
 f = 12.2*(0:N(index)/2-1);
 
 % Compute the single-sided spectrum
-fftA = my_fft(smoothA); % See my_fft.m
-fftB = my_fft(smoothB);
-fftC = my_fft(smoothC);
-fftD = my_fft(smoothD);
+fftA = my_fft(smoothA,N(index)); % See my_fft.m
+fftB = my_fft(smoothB,N(index));
+fftC = my_fft(smoothC,N(index));
+fftD = my_fft(smoothD,N(index));
+
+if(showPlots)
+    figure, plot(f,fftA);
+    figure, plot(f,fftB);
+    figure, plot(f,fftC);
+    figure, plot(f,fftD);
+end
 
 % The max amplitude should be a good approximation for the fundamental
 % frequency
-[y, x] = max(fftA); 
+[amp, x] = max(fftA); 
 % [~, x2] = findpeaks(fftA, 'MinPeakProminence', 0.7*max(fftA));
 
 % PSD
@@ -63,17 +71,17 @@ PSD = sum(fftA.^2);
 % plot(f,fftA(:,[1 11 111]));
 % hold on;
 % plot(f(x([1 11 111])),y([1 11 111]),'rv');
-featuresA = [featuresA' f(x)' PSD']';
+featuresA = [featuresA; f(x); amp; PSD];
 
-clear x;
-[~, x] = max(fftB);
-featuresB = [featuresB; f(x); sum(fftB.^2)];
-clear x;
-[~, x] = max(fftC); 
-featuresC = [featuresC; f(x); sum(fftC.^2)];
-clear x;
-[~, x] = max(fftD); 
-featuresD = [featuresD; f(x); sum(fftD.^2)];
+clear amp x;
+[amp, x] = max(fftB);
+featuresB = [featuresB; f(x); amp; sum(fftB.^2)];
+clear amp x;
+[amp, x] = max(fftC); 
+featuresC = [featuresC; f(x); amp; sum(fftC.^2)];
+clear amp x;
+[amp, x] = max(fftD); 
+featuresD = [featuresD; f(x); amp; sum(fftD.^2)];
 
 %% Rotate matrix
 % Since we use 4 columns to represent 3 sensor signals + 1 "virtual" sensor
