@@ -16,8 +16,7 @@ clear featuresD;
 featuresD = [max(smoothD); min(smoothD); skewness(smoothD); ...
     kurtosis(smoothD)];
 
-%% TODO: Autocorrelation
-% computed at lags 0,1,2, ... T= min[20,length(y)-1]
+% Autocorrelation: computed at lags 0,1,2, ... T= min[20,length(y)-1]
 clear RxxA;
 RxxA = my_autocorr(smoothA); % See my_autocorr.m
 clear RxxB;
@@ -28,19 +27,41 @@ clear RxxD;
 RxxD = my_autocorr(smoothD);
 
 if showPlots
-    figure, plot(1:size(RxxA),RxxA);
-    figure, plot(1:size(RxxA),RxxB);
-    figure, plot(1:size(RxxA),RxxC);
-    figure, plot(1:size(RxxA),RxxD);
+    figure('units','normalized','outerposition',[0 0 1 1]);
+    
+    subplot(2,2,1);
+    plot(0:20,RxxA);
+    title('Supine - All the volunteers, all the autocorrelations');
+    xlabel('lags');
+    ylabel('Rxx');
+    
+    subplot(2,2,2);
+    plot(0:20,RxxB);
+    title('Dorsifexion - All the volunteers, all the autocorrelations');
+    xlabel('lags');
+    ylabel('Rxx');
+    
+    subplot(2,2,3);
+    plot(0:20,RxxC);
+    title('Walk - All the volunteers, all the autocorrelations');
+    xlabel('lags');
+    ylabel('Rxx');
+    
+    subplot(2,2,4);
+    plot(0:20,RxxD);
+    title('Stairs - All the volunteers, all the autocorrelations');
+    xlabel('lags');
+    ylabel('Rxx');
 end
 
-% first value, autocorr with lags=0, is always equal to 1 (it's irrelevant)
+% first value, autocorr with lags=0 is always equal to 1
+% (it's irrelevant)
 featuresA = [featuresA; RxxA(2:end,:)];
 featuresB = [featuresB; RxxB(2:end,:)];
 featuresC = [featuresC; RxxC(2:end,:)];
 featuresD = [featuresD; RxxD(2:end,:)];
 
-%% Frequential features:
+% Frequential features:
 % - Fundamental frequency f0
 % - Power Spectral Density PSD
 
@@ -54,10 +75,31 @@ fftC = my_fft(smoothC,N(index));
 fftD = my_fft(smoothD,N(index));
 
 if(showPlots)
-    figure, plot(f,fftA);
-    figure, plot(f,fftB);
-    figure, plot(f,fftC);
-    figure, plot(f,fftD);
+    figure('units','normalized','outerposition',[0 0 1 1]);
+    
+    subplot(2,2,1);
+    plot(f,fftA);
+    title('Supine - All the volunteers, all the spectra');
+    xlabel('frequency [Hz]');
+    ylabel('FFT');
+    
+    subplot(2,2,2);
+    plot(f,fftB);
+    title('Dorsifexion - All the volunteers, all the spectra');
+    xlabel('frequency [Hz]');
+    ylabel('FFT');
+    
+    subplot(2,2,3);
+    plot(f,fftC);
+    title('Walk - All the volunteers, all the spectra');
+    xlabel('frequency [Hz]');
+    ylabel('FFT');
+    
+    subplot(2,2,4);
+    plot(f,fftD);
+    title('Stairs - All the volunteers, all the spectra');
+    xlabel('frequency [Hz]');
+    ylabel('FFT');
 end
 
 % The max amplitude should be a good approximation for the fundamental
@@ -84,9 +126,9 @@ clear amp x;
 featuresD = [featuresD; f(x); amp; sum(fftD.^2)];
 
 %% Rotate matrix
-% Since we use 4 columns to represent 3 sensor signals + 1 "virtual" sensor
-% (the sum), we move all the features of the same piece of signal on the same
-% column.
+% Since we use 4 columns to represent 3 sensor signals + 1 "virtual"
+% sensor (the sum), we move all the features of the same piece of signal
+% on the same column.
 newFeaturesA = rotate_features(featuresA);
 newFeaturesB = rotate_features(featuresB);
 newFeaturesC = rotate_features(featuresC);

@@ -42,3 +42,11 @@ for i=1:10
         D = [D Struct(i).stair(1+N(index)*(k-1):k*N(index), 2:5)];
     end
 end
+
+if showPlots
+    figure, plot(0.082*(1:size(A,1)),A(:,1:4))
+    title('Volunteer 1 - Stairs (Slice 1)')
+    xlabel('time [s]')
+    ylabel('pressure [ohm]')
+    legend('sensor 1', 'sensor 2', 'sensor 3', 'sensor virt. (sum)')
+end

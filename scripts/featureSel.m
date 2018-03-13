@@ -6,10 +6,12 @@
 % Y = 1 => dorsiflexion
 % Y = 2 => walking
 % Y = 3 => stairs
-X = [newFeaturesA                    newFeaturesB ...
-     newFeaturesC                    newFeaturesD]';
-Y = [zeros(size(newFeaturesA,2),1);  ones(size(newFeaturesB,2),1); ...
-     2*ones(size(newFeaturesC,2),1); 3*ones(size(newFeaturesD,2),1)];
+sizeA = size(newFeaturesA,2);
+sizeB = size(newFeaturesB,2);
+sizeC = size(newFeaturesC,2);
+sizeD = size(newFeaturesD,2);
+X = [newFeaturesA     newFeaturesB   newFeaturesC     newFeaturesD]';
+Y = [zeros(sizeA,1);  ones(sizeB,1); 2*ones(sizeC,1); 3*ones(sizeD,1)];
 % 
 % % Randomly order activities features
 % perm = randperm(size(Y));
@@ -21,7 +23,8 @@ Y = [zeros(size(newFeaturesA,2),1);  ones(size(newFeaturesB,2),1); ...
 % XT = X(1:w, :); Xt = X(w+1:end, :);
 % YT = Y(1:w); Yt = Y(w+1:end);
 
-f = @(xtrain, ytrain, xtest, ytest) sum(ytest ~= classify(xtest, xtrain, ytrain));
+f = @(xtrain, ytrain, xtest, ytest) ...
+    sum(ytest ~= classify(xtest, xtrain, ytrain));
 opts = statset('display','iter');
 
 [fs, history] = sequentialfs(f,X,Y,'nfeatures',10,'options',opts);
