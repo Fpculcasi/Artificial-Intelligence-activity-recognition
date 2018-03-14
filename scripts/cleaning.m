@@ -8,7 +8,7 @@ clear smoothA;
 smoothA = sgolayfilt(A,3,7);
 if showPlots
     figure, plot(0.082*(1:size(smoothA,1)),[A(:,1) smoothA(:,1)])
-    title('Volunteer 1 - Stairs (Slice 1)');
+    title('Volunteer 1 - Supine (Slice 1)');
     xlabel('time [s]');
     ylabel('pressure [ohm]');
     legend('sensor 1 - original', 'sensor 1 - smooth');
@@ -32,7 +32,7 @@ smoothD = zscore(smoothD);
 
 if showPlots
     figure, plot(0.082*(1:size(smoothA)),smoothA(:,1:4))
-    title('Volunteer 1 - Stairs (Slice 1)');
+    title('Volunteer 1 - Supine (Slice 1)');
     xlabel('time [s]');
     ylabel('pressure [ohm]');
     legend('sensor 1', 'sensor 2', 'sensor 3', 'sensor 4');

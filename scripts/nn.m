@@ -16,11 +16,11 @@ meanPerformance = zeros(n2-n1+1,1);
 meanRegression = zeros(n2-n1+1,4);
 
 for n = n1:1:n2,
-    % Create a Fitting Network
+    % Create a Pattern Recognition Network
     hiddenLayerSize = n;
-    net = fitnet(hiddenLayerSize);
 
     for k=1:10,
+        net = patternnet(hiddenLayerSize);
         % Setup Division of Data for Training, Validation, Testing
         net.divideParam.trainRatio = 70/100;
         net.divideParam.valRatio = 15/100;
@@ -57,7 +57,7 @@ end
 
 %% Train the neural network
 [~,hiddenLayerSize] = min(meanPerformance);
-net = fitnet(hiddenLayerSize);
+net = patternnet(hiddenLayerSize);
 
 % Setup Division of Data for Training, Validation, Testing
 net.divideParam.trainRatio = 70/100;
@@ -78,5 +78,5 @@ performance = perform(net,targets,outputs);
 % Plots
 % figure, plotperform(tr)
 % figure, plottrainstate(tr)
-figure, plotconfusion(targets,outputs)
+% figure, plotconfusion(targets,outputs)
 % figure, ploterrhist(errors)
