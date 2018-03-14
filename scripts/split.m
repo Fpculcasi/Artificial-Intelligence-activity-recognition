@@ -1,4 +1,4 @@
-%% Data splitting - split.m
+%% 02 Data splitting - split.m
 % - We need to split every signal to find out the least temporal interval
 %   that is necessary and sufficient to recognize the position/activity.
 
@@ -17,7 +17,7 @@
 N = [37 61 122 145 183 244 366 732 1464];
 
 % The index only need to use one choice among the upper showed.
-index = 7;
+index = 1;
 clear A B C D;
 A = Struct(1).supine(1:N(index), 2:5);
 B = Struct(1).dorsiflexion(1:N(index), 2:5);
@@ -41,4 +41,12 @@ for i=1:10
     for k=2:length(Struct(i).stair)/N(index)
         D = [D Struct(i).stair(1+N(index)*(k-1):k*N(index), 2:5)];
     end
+end
+
+if showPlots
+    figure, plot(0.082*(1:size(A,1)),A(:,1:4))
+    title('Volunteer 1 - Supine (Slice 1)')
+    xlabel('time [s]')
+    ylabel('pressure [ohm]')
+    legend('sensor 1', 'sensor 2', 'sensor 3', 'sensor virt. (sum)')
 end

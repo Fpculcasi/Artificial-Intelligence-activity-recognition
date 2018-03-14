@@ -1,11 +1,23 @@
-%% Feature Selection
-% Principal components analysis
-coeff = zeros(size(newFeaturesA),1);
-[pc,score,latent,tsquare] = princomp(zscore(...
-	[newFeaturesA newFeaturesB newFeaturesC newFeaturesD]));
-for k=1:5
-	[~,x] = max(latent);
-	coeff(x) = 1;
-	latent(x) = 0;
+%% 05 Feature Selection
+% Sequential feature selection
+
+% Classify each activity with a different class:
+% Y = 0 => supine
+% Y = 1 => dorsiflexion
+% Y = 2 => walking
+% Y = 3 => stairs
+sizeA = size(newFeaturesA,2);
+sizeB = size(newFeaturesB,2);
+sizeC = size(newFeaturesC,2);
+sizeD = size(newFeaturesD,2);
+X = [newFeaturesA     newFeaturesB   newFeaturesC     newFeaturesD]';
+Y = [zeros(sizeA,1);  ones(sizeB,1); 2*ones(sizeC,1); 3*ones(sizeD,1)];
+
+f = @(xtrain, ytrain, xtest, ytest) ...
+    sum(ytest ~= classify(xtest, xtrain, ytrain));
+if showPlots
+    opts = statset('display','iter');
+    [fs, history] = sequentialfs(f,X,Y,'nfeatures',10,'options',opts);
+else
+    [fs, history] = sequentialfs(f,X,Y,'nfeatures',10);
 end
-coeff

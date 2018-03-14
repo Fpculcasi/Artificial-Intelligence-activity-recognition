@@ -1,5 +1,7 @@
-%% Data initialization - init.m
+%% 01 Data initialization - init.m
 % - Data are grouped by activity/position and collected in a structure.
+addpath('gitProjects/intelligent-system/');
+load('ProjectWS.mat');
 
 % This variable disable plots, so to fast computations.
 showPlots = false;
@@ -25,21 +27,21 @@ stair = {V01D(2:end,:), V02D(2:end,:), V03D(2:end,:), V04D(2:end,:),...
 Struct = struct('supine',supine,'dorsiflexion',dorsiflexion,'walking',...
     walking,'stair',stair);
 
-% TODO: is it necessary now?
-% Pre-allocate this structure for the next step
-%StructureDFT = struct('supine',{},'dorsiflexion',{},'walking',{},'stair',{});
-
 for i=1:10
-    % - Create a new signal as the sum of the three existing components and
-    %   append at the other components.
+    % - Create a new signal as the sum of the three existing components
+    %   and append at the other components.
     Struct(i).supine = ...
-        [Struct(i).supine(:,4), Struct(i).supine(:,1:3), sum(Struct(i).supine(:,1:3),2)];
+        [Struct(i).supine(:,4), Struct(i).supine(:,1:3), ...
+        sum(Struct(i).supine(:,1:3),2)];
     Struct(i).dorsiflexion = ...
-        [Struct(i).dorsiflexion(:,4), Struct(i).dorsiflexion(:,1:3), sum(Struct(i).dorsiflexion(:,1:3),2)];
+        [Struct(i).dorsiflexion(:,4), Struct(i).dorsiflexion(:,1:3), ...
+        sum(Struct(i).dorsiflexion(:,1:3),2)];
     Struct(i).walking = ...
-        [Struct(i).walking(:,4), Struct(i).walking(:,1:3), sum(Struct(i).walking(:,1:3),2)];
+        [Struct(i).walking(:,4), Struct(i).walking(:,1:3), ...
+        sum(Struct(i).walking(:,1:3),2)];
     Struct(i).stair = ...
-        [Struct(i).stair(:,4), Struct(i).stair(:,1:3), sum(Struct(i).stair(:,1:3),2)];
+        [Struct(i).stair(:,4), Struct(i).stair(:,1:3), ...
+        sum(Struct(i).stair(:,1:3),2)];
  
     % - Plot of each volunteer's activity/position signal and boxplot
     %   to better show patterns, time features, probability distribution.
@@ -82,6 +84,7 @@ for i=1:10
             ones(1,length(Struct(i).dorsiflexion)), ...
             2.*ones(1,length(Struct(i).walking)), ...
             3.*ones(1,length(Struct(i).stair))];
-        boxplot(var,grp,'Labels',{'supine','dorsiflexion','walking','stair'});
+        boxplot(var,grp,'Labels',{'supine','dorsiflexion','walking',...
+            'stair'});
     end
 end
