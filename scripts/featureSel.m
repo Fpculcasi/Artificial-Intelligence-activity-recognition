@@ -1,6 +1,8 @@
 %% 05 Feature Selection
 % Sequential feature selection
 
+num_features = 6;
+
 % Classify each activity with a different class:
 % Y = 0 => supine
 % Y = 1 => dorsiflexion
@@ -17,7 +19,8 @@ f = @(xtrain, ytrain, xtest, ytest) ...
     sum(ytest ~= classify(xtest, xtrain, ytrain));
 if showPlots
     opts = statset('display','iter');
-    [fs, history] = sequentialfs(f,X,Y,'nfeatures',10,'options',opts);
+    [fs, history] = sequentialfs(f,X,Y,'nfeatures',num_features,...
+        'options',opts);
 else
-    [fs, history] = sequentialfs(f,X,Y,'nfeatures',10);
+    [fs, history] = sequentialfs(f,X,Y,'nfeatures',num_features);
 end

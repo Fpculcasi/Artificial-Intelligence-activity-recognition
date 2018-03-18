@@ -12,12 +12,12 @@
 % N6 = 244;             		%20sec
 % N7 = 366;             		%30sec
 % N8 = 732;             		%1min
-% N9 = 1464;                    %2min
+% N9 = 1464;                    %2min - not enough signals to train NN
 % N = 2196;                     %3min - NO SIGNAL HAS A 3min LONG TRACE
-N = [37 61 122 145 183 244 366 732 1464];
+N = [37 61 122 145 183 244 366 732];
 
 % The index only need to use one choice among the upper showed.
-index = 1;
+index = 6;
 clear A B C D;
 A = Struct(1).supine(1:N(index), 2:5);
 B = Struct(1).dorsiflexion(1:N(index), 2:5);
