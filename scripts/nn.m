@@ -56,27 +56,47 @@ if showPlots
 end
 
 %% Train the neural network
+% Best among the networks with chosen number of hidden neurons
 [~,hiddenLayerSize] = min(meanPerformance);
-net = patternnet(hiddenLayerSize);
+p = inf;
+for k=1:10,
+    net_temp = patternnet(hiddenLayerSize);
+    % Setup Division of Data for Training, Validation, Testing
+    net_temp.divideParam.trainRatio = 70/100;
+    net_temp.divideParam.valRatio = 15/100;
+    net_temp.divideParam.testRatio = 15/100;
 
-% Setup Division of Data for Training, Validation, Testing
-net.divideParam.trainRatio = 70/100;
-net.divideParam.valRatio = 15/100;
-net.divideParam.testRatio = 15/100;
+    % hide window: speed up computations
+    net_temp.trainParam.showWindow = false;
 
-% Train the Network
-[net,tr] = train(net,inputs,targets);
+    % Train the Network
+    [net_temp,tr_temp] = train(net_temp,inputs,targets);
 
-% Test the Network
-outputs = net(inputs);
+    % Test the Network
+    outputs = net_temp(inputs);
+    p_temp = perform(net_temp,targets,outputs);
+    if(p_temp < p),
+        best_net = net_temp;
+        p = p_temp;
+        tr = tr_temp;
+    end
+end
+
+%% Print evaluations
+
+outputs = best_net(inputs);
 errors = gsubtract(targets,outputs);
-performance = perform(net,targets,outputs);
+performance = perform(best_net,targets,outputs);
 
 % View the Network
-% view(net)
+% view(best_net)
 
 % Plots
 % figure, plotperform(tr)
 % figure, plottrainstate(tr)
 % figure, plotconfusion(targets,outputs)
 % figure, ploterrhist(errors)
+
+[actual,~,~] = find(targets);
+[~,predict] = max(outputs);
+cfmatrix2(actual',predict,[1 2 3 4], 1, 1);
