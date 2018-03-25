@@ -10,6 +10,8 @@ targets(4,sizeA+sizeB+sizeC+1:end) = 1;
 
 n1 = 1;  % lowest number of hidden neurons
 n2 = 10; % highest number of hidden neurons
+
+% preallocate followings' for speed
 performances = zeros(10,1);
 regressions = zeros(10,4);
 meanPerformance = zeros(n2-n1+1,1);
@@ -21,6 +23,7 @@ for n = n1:1:n2,
 
     for k=1:10,
         net = patternnet(hiddenLayerSize);
+        
         % Setup Division of Data for Training, Validation, Testing
         net.divideParam.trainRatio = 70/100;
         net.divideParam.valRatio = 15/100;

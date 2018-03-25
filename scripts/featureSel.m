@@ -1,6 +1,7 @@
 %% 05 Feature Selection
 % Sequential feature selection
 
+% Fix the number of features on which we would like to reduce each signal
 num_features = 6;
 
 % Classify each activity with a different class:

@@ -1,5 +1,5 @@
 [System]
-Name='prova1'
+Name='mamdani'
 Type='mamdani'
 Version=2.0
 NumInputs=4
@@ -31,11 +31,11 @@ MF4='high':'gaussmf',[0.04034 0.9025]
 
 [Input3]
 Name='autocorr3'
-Range=[0 1]
+Range=[-0.3 1]
 NumMFs=3
-MF1='low':'gaussmf',[0.1699 6.939e-18]
-MF2='medium':'gaussmf',[0.1274 0.5]
-MF3='high':'gaussmf',[0.0728510107471541 0.897]
+MF1='low':'gaussmf',[0.17 0]
+MF2='medium':'gaussmf',[0.127 0.6]
+MF3='high':'gaussmf',[0.11673841479469 0.9]
 
 [Input4]
 Name='f0'

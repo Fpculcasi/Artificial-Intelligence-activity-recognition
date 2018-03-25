@@ -1,7 +1,7 @@
 # Activity/Position recognition
 ## Intelligent System Project
 
-Developing of a neural system, a Mamdany-type fuzzy inference system and a Sugeno-type fuzzy inference system for the identification of a volunteer position/activity
+Developing of a neural system, a Mamdani-type fuzzy inference system and a Sugeno-type fuzzy inference system for the identification of a volunteer position/activity
 
 ### Description
 The project requires the analysis of a set of medical data. The application context is dermatology and, in particular, the compression therapy by means of bandages in the treatment of venous ulcers of the leg.

@@ -15,8 +15,8 @@ for k=1:27,
 end
 
 %%
-for w=1:4,
-    for k=1:27,
+for w=4:4,
+    for k=[5 6 7 25],
         figure, histogram(newFeaturesA(((w-1)*27)+k,:),20);
         hold on;
         histogram(newFeaturesB(((w-1)*27)+k,:),20);
@@ -33,4 +33,22 @@ end
 
 %%
 inputs = X(:,[86 87 88 106]);
+targets = zeros(size(Y,1),1);
+targets(1:sizeA) = 0.1;
+targets(sizeA+1:sizeA+sizeB) = 0.3;
+targets(sizeA+sizeB+1:sizeA+sizeB+sizeC) = 0.5;
+targets(sizeA+sizeB+sizeC+1:end) = 0.7;
+
+outputs = evalfis(inputs,mamdani);
+errors = gsubtract(targets,outputs);
+
+figure, plot(1:size(outputs,1),targets,'bo',1:size(outputs,1),outputs,'rx');
+title('Result of Mamdani FIS');
+xlabel('inputs');
+ylabel('classes');
+legend('target class','output class');
+
+%% ANFIS
 inputs = [inputs actual];
+
+anfisedit;
