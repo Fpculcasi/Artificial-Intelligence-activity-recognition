@@ -88,10 +88,10 @@ outputs = best_net(inputs);
 errors = gsubtract(targets,outputs);
 performance = perform(best_net,targets,outputs);
 
-% View the Network
+% % View the Network
 % view(best_net)
-
-% Plots
+% 
+% % Plots
 % figure, plotperform(tr)
 % figure, plottrainstate(tr)
 % figure, plotconfusion(targets,outputs)
