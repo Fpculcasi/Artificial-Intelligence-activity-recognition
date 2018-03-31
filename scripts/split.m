@@ -17,7 +17,7 @@
 N = [37 61 122 145 183 244 366 732];
 
 % The index only need to use one choice among the upper showed.
-index = 6;
+index = 7;
 clear A B C D;
 A = Struct(1).supine(1:N(index), 2:5);
 B = Struct(1).dorsiflexion(1:N(index), 2:5);
@@ -42,6 +42,9 @@ for i=1:10
         D = [D Struct(i).stair(1+N(index)*(k-1):k*N(index), 2:5)];
     end
 end
+
+clear i k;
+clear Struct;
 
 if showPlots
     figure, plot(0.082*(1:size(A,1)),A(:,1:4))

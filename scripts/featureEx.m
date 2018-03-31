@@ -1,29 +1,19 @@
 %% 04 Feature extraction - featureEx.m
 % Obtain a set of temporal feature starting from the N(j) samples of the
 % signal.
-clear fftA fftB fftC fftD;
-
-clear featuresA;
-featuresA = [max(smoothA); min(smoothA); skewness(smoothA); ...
-    kurtosis(smoothA)];
-clear featuresB;
-featuresB = [max(smoothB); min(smoothB); skewness(smoothB); ...
-    kurtosis(smoothB)];
-clear featuresC;
-featuresC = [max(smoothC); min(smoothC); skewness(smoothC); ...
-    kurtosis(smoothC)];
-clear featuresD;
-featuresD = [max(smoothD); min(smoothD); skewness(smoothD); ...
-    kurtosis(smoothD)];
+featuresA = [max(smoothA); min(smoothA); quantile(smoothA,[.25 .5]); ...
+    skewness(smoothA); kurtosis(smoothA)];
+featuresB = [max(smoothB); min(smoothB); quantile(smoothB,[.25 .5]); ...
+    skewness(smoothB); kurtosis(smoothB)];
+featuresC = [max(smoothC); min(smoothC); quantile(smoothC,[.25 .5]); ...
+    skewness(smoothC); kurtosis(smoothC)];
+featuresD = [max(smoothD); min(smoothD); quantile(smoothD,[.25 .5]); ...
+    skewness(smoothD); kurtosis(smoothD)];
 
 % Autocorrelation: computed at lags 0,1,2, ... T= min[20,length(y)-1]
-clear RxxA;
 RxxA = my_autocorr(smoothA); % See my_autocorr.m
-clear RxxB;
 RxxB = my_autocorr(smoothB);
-clear RxxC;
 RxxC = my_autocorr(smoothC);
-clear RxxD;
 RxxD = my_autocorr(smoothD);
 
 if showPlots
@@ -60,6 +50,8 @@ featuresA = [featuresA; RxxA(2:end,:)];
 featuresB = [featuresB; RxxB(2:end,:)];
 featuresC = [featuresC; RxxC(2:end,:)];
 featuresD = [featuresD; RxxD(2:end,:)];
+
+clear RxxA RxxB RxxC RxxD;
 
 % Frequential features:
 % - Fundamental frequency f0
@@ -115,15 +107,14 @@ PSD = sum(fftA.^2);
 % plot(f(x([1 11 111])),y([1 11 111]),'rv');
 featuresA = [featuresA; f(x); amp; PSD];
 
-clear amp x;
 [amp, x] = max(fftB);
 featuresB = [featuresB; f(x); amp; sum(fftB.^2)];
-clear amp x;
 [amp, x] = max(fftC); 
 featuresC = [featuresC; f(x); amp; sum(fftC.^2)];
-clear amp x;
 [amp, x] = max(fftD); 
 featuresD = [featuresD; f(x); amp; sum(fftD.^2)];
+
+clear smoothA smoothB smoothC smoothD f i fftA fftB fftC fftD amp x PSD;
 
 %% Rotate matrix
 % Since we use 4 columns to represent 3 sensor signals + 1 "virtual"
@@ -133,3 +124,5 @@ newFeaturesA = rotate_features(featuresA);
 newFeaturesB = rotate_features(featuresB);
 newFeaturesC = rotate_features(featuresC);
 newFeaturesD = rotate_features(featuresD);
+
+clear featuresA featuresB featuresC featuresD;

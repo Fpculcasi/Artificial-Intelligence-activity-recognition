@@ -23,6 +23,8 @@ smoothC = sgolayfilt(C,3,7);
 clear smoothD;
 smoothD = sgolayfilt(D,3,7);
 
+clear A B C D;
+
 % Use Z-score normalization for each signal, in order to be able to compare
 % signals.
 smoothA = zscore(smoothA);

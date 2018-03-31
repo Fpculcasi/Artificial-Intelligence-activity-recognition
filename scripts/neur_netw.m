@@ -58,10 +58,12 @@ if showPlots
     legend('mean regression');
 end
 
+clear n1 n2 n performances regressions;
+
 %% Train the neural network
 % Best among the networks with chosen number of hidden neurons
 [~,hiddenLayerSize] = min(meanPerformance);
-p = inf;
+perf = inf;
 for k=1:10,
     net_temp = patternnet(hiddenLayerSize);
     % Setup Division of Data for Training, Validation, Testing
@@ -70,20 +72,21 @@ for k=1:10,
     net_temp.divideParam.testRatio = 15/100;
 
     % hide window: speed up computations
-    net_temp.trainParam.showWindow = false;
+    net_temp.trainParam.showWindow = showPlots;
 
     % Train the Network
-    [net_temp,tr_temp] = train(net_temp,inputs,targets);
+    [net_temp,~] = train(net_temp,inputs,targets);
 
     % Test the Network
     outputs = net_temp(inputs);
-    p_temp = perform(net_temp,targets,outputs);
-    if(p_temp < p),
+    perf_temp = perform(net_temp,targets,outputs);
+    if(perf_temp < perf),
         best_net = net_temp;
-        p = p_temp;
-        tr = tr_temp;
+        perf = perf_temp;
     end
 end
+
+clear perf perf_temp net net_temp outputs;
 
 %% Print evaluations
 
