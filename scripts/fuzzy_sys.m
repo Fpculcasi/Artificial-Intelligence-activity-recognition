@@ -60,23 +60,62 @@ end
 clear f xi;
 
 %%
-% mamdani = readfis('mamdani2.fis');
+% mamdani = readfis('mamdani.fis');
+mamdani5 = readfis('mamdani5.fis');
 
 inputs = X(:,fs);
-targets = zeros(size(Y,1),1);
-targets(1:sizeA) = 0.1;
-targets(sizeA+1:sizeA+sizeB) = 0.5;
-targets(sizeA+sizeB+1:sizeA+sizeB+sizeC) = 0.7;
-targets(sizeA+sizeB+sizeC+1:end) = 0.8;
 
-outputs = evalfis(inputs,mamdani4);
-errors = gsubtract(targets,outputs);
+size1 = sizeA;
+size2 = size1+sizeB;
+size3 = size2+sizeC;
+size4 = size3+sizeD;
+targets = zeros(size(Y,1),1);
+targets(1:size1) = 0.2;
+targets(size1+1:size2) = 0.4;
+targets(size2+1:size3) = 0.6;
+targets(size3+1:end) = 0.8;
+
+outputs = evalfis(inputs,mamdani5);
+% errors = gsubtract(targets,outputs);
+% pre_error = sqrt(mean(errors.^2))
 
 figure, plot(1:size(outputs,1),targets,'bo',1:size(outputs,1),outputs,'rx');
 title('Result of Mamdani FIS');
 xlabel('inputs');
 ylabel('classes');
 legend('target class','output class');
+
+% just to better understand plot
+count = 0;
+for k=1:size(outputs,1)
+    if outputs(k)<0.3
+        outputs(k) = 0.2;
+    elseif outputs(k)<0.5
+        outputs(k) = 0.4;
+    elseif outputs(k)<0.7
+        outputs(k) = 0.6;
+    else
+        outputs(k) = 0.8;
+    end
+    
+    if outputs(k) == targets(k),
+        count = count + 1;
+    end
+end
+
+figure, plot(1:size(outputs,1),targets,'bo',1:size(outputs,1),outputs,'rx');
+title('Result of Mamdani FIS');
+xlabel('inputs');
+ylabel('classes');
+legend('target class','output class');
+
+% figure, plot(outputs(1:size1),1:size1,'bo');
+% hold on;
+% plot(outputs(size1+1:size2),size1+1:size2,'go');
+% plot(outputs(size2+1:size3),size2+1:size3,'ro');
+% plot(outputs(size3+1:end),size3+1:size4,'ko');
+
+cfmatrix2(actual',(outputs.*5)',[1 2 3 4], 1, 1);
 
 %% ANFIS
 inputs = [inputs actual];

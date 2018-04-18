@@ -2,20 +2,18 @@
 
 % "What's the best number of hidden neurons?"
 inputs = X(:,fs)';
-targets = zeros(4,size(Y,1));
+targets = zeros(4,size(X,1));
 targets(1,1:sizeA) = 1;
 targets(2,sizeA+1:sizeA+sizeB) = 1;
 targets(3,sizeA+sizeB+1:sizeA+sizeB+sizeC) = 1;
 targets(4,sizeA+sizeB+sizeC+1:end) = 1;
 
-n1 = 1;  % lowest number of hidden neurons
+n1 = num_features;  % lowest number of hidden neurons
 n2 = 10; % highest number of hidden neurons
 
 % preallocate followings' for speed
 performances = zeros(10,1);
-regressions = zeros(10,4);
 meanPerformance = zeros(n2-n1+1,1);
-meanRegression = zeros(n2-n1+1,4);
 
 for n = n1:1:n2,
     % Create a Pattern Recognition Network
@@ -38,10 +36,8 @@ for n = n1:1:n2,
         % Test the Network
         outputs = net(inputs);
         performances(k) = perform(net,targets,outputs);
-        [regressions(k,:),~,~] = regression(targets,outputs);
     end
-    meanRegression(n,:) = mean(regressions);
-    meanPerformance(n) = mean(performances);
+    meanPerformance(n-n1+1) = mean(performances);
 end
 
 if showPlots
@@ -50,19 +46,12 @@ if showPlots
     ylabel('mean square error');
     xlabel('# of hidden neurons');
     legend('mean performance');
-
-    figure, plot(n1:n2, meanRegression, 'g-o');
-    title('R-value: correlation between output and targets');
-    ylabel('Regression coefficent');
-    xlabel('# of hidden neurons');
-    legend('mean regression');
 end
-
-clear n1 n2 n performances regressions;
 
 %% Train the neural network
 % Best among the networks with chosen number of hidden neurons
 [~,hiddenLayerSize] = min(meanPerformance);
+hiddenLayerSize = hiddenLayerSize + n1 - 1;
 perf = inf;
 for k=1:10,
     net_temp = patternnet(hiddenLayerSize);
@@ -86,13 +75,14 @@ for k=1:10,
     end
 end
 
-clear perf perf_temp net net_temp outputs;
+clear n1 n2 n performances;
+clear meanPerformance k perf perf_temp net net_temp outputs;
 
 %% Print evaluations
 
 outputs = best_net(inputs);
-errors = gsubtract(targets,outputs);
-performance = perform(best_net,targets,outputs);
+% errors = gsubtract(targets,outputs);
+% performance = perform(best_net,targets,outputs);
 
 % % View the Network
 % view(best_net)
@@ -103,6 +93,10 @@ performance = perform(best_net,targets,outputs);
 % figure, plotconfusion(targets,outputs)
 % figure, ploterrhist(errors)
 
+clear best_net;
+
 [actual,~,~] = find(targets);
 [~,predict] = max(outputs);
 cfmatrix2(actual',predict,[1 2 3 4], 1, 1);
+
+clear predict outputs;
