@@ -1,7 +1,8 @@
 %% 05 Feature Selection
 % Sequential feature selection
 
-num_features = 6;
+% Fix the number of features on which we would like to reduce each signal
+num_features = 4;
 
 % Classify each activity with a different class:
 % Y = 0 => supine
@@ -19,8 +20,13 @@ f = @(xtrain, ytrain, xtest, ytest) ...
     sum(ytest ~= classify(xtest, xtrain, ytrain));
 if showPlots
     opts = statset('display','iter');
-    [fs, history] = sequentialfs(f,X,Y,'nfeatures',num_features,...
+    [fs, ~] = sequentialfs(f,X,Y,'nfeatures',num_features,...
         'options',opts);
 else
-    [fs, history] = sequentialfs(f,X,Y,'nfeatures',num_features);
+    [fs, ~] = sequentialfs(f,X,Y,'nfeatures',num_features);
 end
+
+fs(:)=0;
+fs([27 36 40 45]) = 1;
+
+clear f;

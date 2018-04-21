@@ -1,0 +1,61 @@
+[System]
+Name='mamdani2'
+Type='mamdani'
+Version=2.0
+NumInputs=4
+NumOutputs=1
+NumRules=4
+AndMethod='min'
+OrMethod='max'
+ImpMethod='min'
+AggMethod='max'
+DefuzzMethod='centroid'
+
+[Input1]
+Name='autocorr1'
+Range=[0 1]
+NumMFs=4
+MF1='low':'trimf',[0.709939759036144 0.842 0.939]
+MF2='medium-low':'trimf',[0.805 0.871 0.950301204819277]
+MF3='high':'trimf',[0.757530120481928 0.98 1]
+MF4='medium-high':'trimf',[0.809 0.94 0.993674698795181]
+
+[Input2]
+Name='autocorr2'
+Range=[0 1]
+NumMFs=4
+MF1='low':'trimf',[0.233 0.503 0.74859437751004]
+MF2='medium-low':'trimf',[0.357 0.562 0.7]
+MF3='medium-high':'trimf',[0.363052208835341 0.784 0.991]
+MF4='high':'trimf',[0.288 0.947791164658634 0.998]
+
+[Input3]
+Name='autocorr3'
+Range=[-0.4 1]
+NumMFs=3
+MF1='low':'trimf',[-0.333933293172691 -0.0298232931726908 0.416176706827309]
+MF2='medium':'trimf',[-0.196184738955823 0.569 0.891]
+MF3='high':'trimf',[-0.291767068273092 0.954 0.988]
+
+[Input4]
+Name='f0'
+Range=[0 600]
+NumMFs=3
+MF1='low':'trapmf',[0 0 32.5 92.5]
+MF2='medium':'trimf',[50 156 436.746987951807]
+MF3='high':'trimf',[125 266 583.734939759036]
+
+[Output1]
+Name='activity'
+Range=[0 0.8]
+NumMFs=4
+MF1='supine':'trimf',[0 0.1 0.2]
+MF2='dorsiflexion':'trimf',[0.2 0.3 0.4]
+MF3='walking':'trimf',[0.4 0.5 0.6]
+MF4='stair':'trimf',[0.6 0.7 0.8]
+
+[Rules]
+3 4 3 1, 1 (1) : 1
+4 3 2 2, 2 (1) : 1
+2 2 1 3, 3 (1) : 1
+1 1 1 3, 4 (1) : 1

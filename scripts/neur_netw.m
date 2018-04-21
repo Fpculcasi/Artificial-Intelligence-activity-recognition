@@ -2,18 +2,18 @@
 
 % "What's the best number of hidden neurons?"
 inputs = X(:,fs)';
-targets = zeros(4,size(Y,1));
+targets = zeros(4,size(X,1));
 targets(1,1:sizeA) = 1;
 targets(2,sizeA+1:sizeA+sizeB) = 1;
 targets(3,sizeA+sizeB+1:sizeA+sizeB+sizeC) = 1;
 targets(4,sizeA+sizeB+sizeC+1:end) = 1;
 
-n1 = 1;  % lowest number of hidden neurons
+n1 = num_features;  % lowest number of hidden neurons
 n2 = 10; % highest number of hidden neurons
+
+% preallocate followings' for speed
 performances = zeros(10,1);
-regressions = zeros(10,4);
 meanPerformance = zeros(n2-n1+1,1);
-meanRegression = zeros(n2-n1+1,4);
 
 for n = n1:1:n2,
     % Create a Pattern Recognition Network
@@ -21,6 +21,7 @@ for n = n1:1:n2,
 
     for k=1:10,
         net = patternnet(hiddenLayerSize);
+        
         % Setup Division of Data for Training, Validation, Testing
         net.divideParam.trainRatio = 70/100;
         net.divideParam.valRatio = 15/100;
@@ -35,10 +36,8 @@ for n = n1:1:n2,
         % Test the Network
         outputs = net(inputs);
         performances(k) = perform(net,targets,outputs);
-        [regressions(k,:),~,~] = regression(targets,outputs);
     end
-    meanRegression(n,:) = mean(regressions);
-    meanPerformance(n) = mean(performances);
+    meanPerformance(n-n1+1) = mean(performances);
 end
 
 if showPlots
@@ -47,18 +46,13 @@ if showPlots
     ylabel('mean square error');
     xlabel('# of hidden neurons');
     legend('mean performance');
-
-    figure, plot(n1:n2, meanRegression, 'g-o');
-    title('R-value: correlation between output and targets');
-    ylabel('Regression coefficent');
-    xlabel('# of hidden neurons');
-    legend('mean regression');
 end
 
 %% Train the neural network
 % Best among the networks with chosen number of hidden neurons
 [~,hiddenLayerSize] = min(meanPerformance);
-p = inf;
+hiddenLayerSize = hiddenLayerSize + n1 - 1;
+perf = inf;
 for k=1:10,
     net_temp = patternnet(hiddenLayerSize);
     % Setup Division of Data for Training, Validation, Testing
@@ -67,36 +61,42 @@ for k=1:10,
     net_temp.divideParam.testRatio = 15/100;
 
     % hide window: speed up computations
-    net_temp.trainParam.showWindow = false;
+    net_temp.trainParam.showWindow = showPlots;
 
     % Train the Network
-    [net_temp,tr_temp] = train(net_temp,inputs,targets);
+    [net_temp,~] = train(net_temp,inputs,targets);
 
     % Test the Network
     outputs = net_temp(inputs);
-    p_temp = perform(net_temp,targets,outputs);
-    if(p_temp < p),
+    perf_temp = perform(net_temp,targets,outputs);
+    if(perf_temp < perf),
         best_net = net_temp;
-        p = p_temp;
-        tr = tr_temp;
+        perf = perf_temp;
     end
 end
+
+clear n1 n2 n performances;
+clear meanPerformance k perf perf_temp net net_temp outputs;
 
 %% Print evaluations
 
 outputs = best_net(inputs);
-errors = gsubtract(targets,outputs);
-performance = perform(best_net,targets,outputs);
+% errors = gsubtract(targets,outputs);
+% performance = perform(best_net,targets,outputs);
 
-% View the Network
+% % View the Network
 % view(best_net)
-
-% Plots
+% 
+% % Plots
 % figure, plotperform(tr)
 % figure, plottrainstate(tr)
 % figure, plotconfusion(targets,outputs)
 % figure, ploterrhist(errors)
 
+clear best_net;
+
 [actual,~,~] = find(targets);
 [~,predict] = max(outputs);
 cfmatrix2(actual',predict,[1 2 3 4], 1, 1);
+
+clear predict outputs;
