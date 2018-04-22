@@ -9,53 +9,50 @@ AndMethod='min'
 OrMethod='max'
 ImpMethod='min'
 AggMethod='max'
-DefuzzMethod='centroid'
+DefuzzMethod='bisector'
 
 [Input1]
-Name='autocorr1'
-Range=[0 1]
-NumMFs=4
-MF1='low':'gaussmf',[0.04107 0.7985]
-MF2='medium-low':'gaussmf',[0.01614 0.871]
-MF3='high':'gaussmf',[0.008493 0.98]
-MF4='medium-high':'gaussmf',[0.01316 0.9395]
+Name='f_0(f27s1)'
+Range=[-100 700]
+NumMFs=3
+MF1='low':'trapmf',[-100 -100 27.08 61.99]
+MF2='medium':'gbellmf',[79.4 1.87 120.14859437751]
+MF3='high':'trapmf',[40.5 235.9 700 700]
 
 [Input2]
-Name='autocorr2'
-Range=[0 1]
-NumMFs=4
-MF1='low':'gaussmf',[0.0637 0.45]
-MF2='medium-low':'gaussmf',[0.04247 0.6]
-MF3='medium-high':'gaussmf',[0.0637 0.75]
-MF4='high':'gaussmf',[0.04034 0.9025]
+Name='Rxx_1(f7s2)'
+Range=[0.65 1.1]
+NumMFs=3
+MF1='low':'trapmf',[0.618734939759036 0.618734939759036 0.820734939759036 0.899734939759036]
+MF2='medium':'gaussmf',[0.022663025589318 0.88]
+MF3='high':'gbellmf',[0.167 4.3 1.06265060240964]
 
 [Input3]
-Name='autocorr3'
-Range=[-0.3 1]
+Name='Rxx_5(f11s2)'
+Range=[-1.5 1.5]
 NumMFs=3
-MF1='low':'gaussmf',[0.17 0]
-MF2='medium':'gaussmf',[0.127 0.6]
-MF3='high':'gaussmf',[0.11673841479469 0.9]
+MF1='low':'gaussmf',[0.299 -0.244897959183673]
+MF2='medium':'gbellmf',[0.325903614457831 1.55 0.1]
+MF3='high':'trapmf',[-0.9986 0.7353 1.5 1.5]
 
 [Input4]
-Name='f0'
-Range=[0 600]
-NumMFs=3
-MF1='low':'trapmf',[0 0 32.5 92.5]
-MF2='medium':'trimf',[20 150 400]
-MF3='high':'trimf',[200 300 600]
+Name='Rxx_1_0(f16s2)'
+Range=[-1 1.5]
+NumMFs=2
+MF1='low':'trapmf',[-1 -1 -0.170918367346939 0.722]
+MF2='high':'trapmf',[0.0635 0.451530612244898 1.5 1.5]
 
 [Output1]
 Name='activity'
 Range=[0 1]
 NumMFs=4
-MF1='supine':'trimf',[0 0.125 0.25]
-MF2='dorsiflexion':'trimf',[0.25 0.375 0.5]
-MF3='walking':'trimf',[0.5 0.625 0.75]
-MF4='stair':'trimf',[0.75 0.875 1]
+MF1='supine':'trimf',[0 0.2 0.4]
+MF2='dorsiflexion':'trimf',[0.2 0.4 0.6]
+MF3='walking':'trimf',[0.4 0.6 0.8]
+MF4='stair':'trimf',[0.6 0.8 1]
 
 [Rules]
-3 4 3 1, 1 (1) : 1
-4 3 2 2, 2 (1) : 1
-2 2 1 3, 3 (1) : 1
-1 1 1 3, 4 (1) : 1
+1 3 3 2, 1 (1) : 1
+2 3 2 1, 2 (1) : 1
+3 1 1 1, 3 (1) : 1
+3 2 1 1, 4 (1) : 1

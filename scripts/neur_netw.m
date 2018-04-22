@@ -75,8 +75,8 @@ for k=1:10,
     end
 end
 
-clear n1 n2 n performances;
-clear meanPerformance k perf perf_temp net net_temp outputs;
+clear n1 n2 n performances meanPerformance;
+clear k perf perf_temp net net_temp outputs hiddenLayerSize;
 
 %% Print evaluations
 

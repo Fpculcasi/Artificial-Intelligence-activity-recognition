@@ -12,7 +12,7 @@ AggMethod='max'
 DefuzzMethod='bisector'
 
 [Input1]
-Name='f0(_f27s1)'
+Name='f_0(f27s1)'
 Range=[-100 700]
 NumMFs=3
 MF1='low':'trapmf',[-100 -100 27.08 61.99]
