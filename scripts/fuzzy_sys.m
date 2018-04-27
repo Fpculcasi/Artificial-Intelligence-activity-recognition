@@ -113,10 +113,6 @@ for k=1:size(outputs,1)
     else
         outputs(k) = 0.8;
     end
-    
-    if outputs(k) == targets(k),
-        count = count + 1;
-    end
 end
 
 % figure,
