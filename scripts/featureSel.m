@@ -26,7 +26,4 @@ else
     [fs, ~] = sequentialfs(f,X,Y,'nfeatures',num_features);
 end
 
-fs(:)=0;
-fs([27 36 40 45]) = 1;
-
 clear f;
