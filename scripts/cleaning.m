@@ -1,8 +1,8 @@
 %% 03 Data cleaning - cleaning.m
-% Clean the signal from noise by mean of a smoothing filter
-% (Savitzky-Golay Filter), sgolayfilt(X,K,F):
-%  - K=3, third-order polynomial;
-%  - F=7, just an odd value greater than the piece of signal;
+% - Clean the signal from noise by mean of a smoothing filter
+%   (Savitzky-Golay Filter), sgolayfilt(X,K,F):
+%    - K=3, third-order polynomial;
+%    - F=7, just an odd value greater than the piece of signal;
 
 clear smoothA;
 smoothA = sgolayfilt(A,3,7);
@@ -25,8 +25,8 @@ smoothD = sgolayfilt(D,3,7);
 
 clear A B C D;
 
-% Use Z-score normalization for each signal, in order to be able to compare
-% signals.
+% - Use Z-score normalization for each signal, in order to be able to
+%   compare signals.
 smoothA = zscore(smoothA);
 smoothB = zscore(smoothB);
 smoothC = zscore(smoothC);

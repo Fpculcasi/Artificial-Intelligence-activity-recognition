@@ -63,7 +63,9 @@ if(showPlots),
     clear f xi;
 end
 
-%%
+%% Mamdani FIS
+% - Chosen the features, define a Mamdani FIS that's able to infer the
+%   activities
 
 fs(:)=0;
 fs([27 36 40 45]) = 1;
@@ -73,15 +75,11 @@ mamdani = readfis('mamdani.fis');
 
 inputs = X(:,fs);
 
-size1 = sizeA;
-size2 = size1+sizeB;
-size3 = size2+sizeC;
-size4 = size3+sizeD;
 targets = zeros(size(Y,1),1);
-targets(1:size1) = 0.2;
-targets(size1+1:size2) = 0.4;
-targets(size2+1:size3) = 0.6;
-targets(size3+1:end) = 0.8;
+targets(1:sizes(1)) = 0.2;
+targets(sizes(1)+1:sizes(2)) = 0.4;
+targets(sizes(2)+1:sizes(3)) = 0.6;
+targets(sizes(3)+1:end) = 0.8;
 
 outputs = evalfis(inputs,mamdani);
 % errors = gsubtract(targets,outputs);

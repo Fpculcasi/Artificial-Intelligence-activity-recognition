@@ -1,5 +1,7 @@
 %% 01 Data initialization - init.m
 % - Data are grouped by activity/position and collected in a structure.
+
+% Move from '$HOME' path to the project path.
 addpath('gitProjects/intelligent-system/');
 load('ProjectWS.mat');
 

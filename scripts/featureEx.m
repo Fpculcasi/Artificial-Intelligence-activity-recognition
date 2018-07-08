@@ -1,13 +1,16 @@
 %% 04 Feature extraction - featureEx.m
-% Obtain a set of temporal feature starting from the N(j) samples of the
-% signal.
-featuresA = [max(smoothA); min(smoothA); quantile(smoothA,[.25 .5]); ...
-    skewness(smoothA); kurtosis(smoothA)];
-featuresB = [max(smoothB); min(smoothB); quantile(smoothB,[.25 .5]); ...
+% - Obtain a set of temporal feature starting from the N(j) samples of the
+%   signal.
+featuresA = [ ...
+    max(smoothA); min(smoothA); ...     % min/max
+    quantile(smoothA,[.25 .75]); ...    % 1st/3rd quartile
+    skewness(smoothA); ...              % asimmetry
+    kurtosis(smoothA)];                 % tailness
+featuresB = [max(smoothB); min(smoothB); quantile(smoothB,[.25 .75]); ...
     skewness(smoothB); kurtosis(smoothB)];
-featuresC = [max(smoothC); min(smoothC); quantile(smoothC,[.25 .5]); ...
+featuresC = [max(smoothC); min(smoothC); quantile(smoothC,[.25 .75]); ...
     skewness(smoothC); kurtosis(smoothC)];
-featuresD = [max(smoothD); min(smoothD); quantile(smoothD,[.25 .5]); ...
+featuresD = [max(smoothD); min(smoothD); quantile(smoothD,[.25 .75]); ...
     skewness(smoothD); kurtosis(smoothD)];
 
 % Autocorrelation: computed at lags 0,1,2, ... T= min[20,length(y)-1]
@@ -53,9 +56,9 @@ featuresD = [featuresD; RxxD(2:end,:)];
 
 clear RxxA RxxB RxxC RxxD;
 
-% Frequential features:
-% - Fundamental frequency f0
-% - Power Spectral Density PSD
+% - Frequential features:
+%   - Fundamental frequency f0
+%   - Power Spectral Density PSD
 
 % Define the frequency domain
 f = 12.2*(0:N(index)/2-1);
@@ -101,10 +104,7 @@ end
 
 % PSD
 PSD = sum(fftA.^2);
-% figure
-% plot(f,fftA(:,[1 11 111]));
-% hold on;
-% plot(f(x([1 11 111])),y([1 11 111]),'rv');
+
 featuresA = [featuresA; f(x); amp; PSD];
 
 [amp, x] = max(fftB);

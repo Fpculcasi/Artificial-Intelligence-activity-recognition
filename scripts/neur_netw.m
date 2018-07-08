@@ -3,10 +3,10 @@
 % "What's the best number of hidden neurons?"
 inputs = X(:,fs)';
 targets = zeros(4,size(X,1));
-targets(1,1:sizeA) = 1;
-targets(2,sizeA+1:sizeA+sizeB) = 1;
-targets(3,sizeA+sizeB+1:sizeA+sizeB+sizeC) = 1;
-targets(4,sizeA+sizeB+sizeC+1:end) = 1;
+targets(1,1:sizes(1)) = 1;
+targets(2,sizes(1)+1:cum_sizes(2)) = 1;
+targets(3,cum_sizes(2)+1:cum_sizes(3)) = 1;
+targets(4,cum_sizes(3)+1:end) = 1;
 
 n1 = num_features;  % lowest number of hidden neurons
 n2 = 10; % highest number of hidden neurons
@@ -49,7 +49,7 @@ if showPlots
 end
 
 %% Train the neural network
-% Best among the networks with chosen number of hidden neurons
+% Find the best among the networks with chosen number of hidden neurons
 [~,hiddenLayerSize] = min(meanPerformance);
 hiddenLayerSize = hiddenLayerSize + n1 - 1;
 perf = inf;
@@ -78,7 +78,7 @@ end
 clear n1 n2 n performances meanPerformance;
 clear k perf perf_temp net net_temp outputs hiddenLayerSize;
 
-%% Print evaluations
+%% Print performance
 
 outputs = best_net(inputs);
 % errors = gsubtract(targets,outputs);
