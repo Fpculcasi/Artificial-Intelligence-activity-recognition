@@ -1,0 +1,40 @@
+
+Start forward sequential feature selection:
+Initial columns included:  none
+Columns that can not be included:  none
+Step 1, added column 27, criterion value 0.331288
+Step 2, added column 36, criterion value 0.214724
+Step 3, added column 40, criterion value 0.165644
+Step 4, added column 73, criterion value 0.110429
+Step 5, added column 7, criterion value 0.0858896
+Step 6, added column 110, criterion value 0.0736196
+Step 7, added column 33, criterion value 0.0674847
+Final columns included:  7 27 33 36 40 73 110 
+
+
+Start forward sequential feature selection:
+Initial columns included:  none
+Columns that can not be included:  none
+Step 1, added column 27, criterion value 0.337423
+Step 2, added column 36, criterion value 0.220859
+Step 3, added column 45, criterion value 0.147239
+Step 4, added column 40, criterion value 0.134969
+Step 5, added column 101, criterion value 0.104294
+Step 6, added column 2, criterion value 0.0920245
+Step 7, added column 65, criterion value 0.0858896
+Step 8, added column 73, criterion value 0.0797546
+Step 9, added column 33, criterion value 0.0613497
+Step 10, added column 38, criterion value 0.0552147
+Final columns included:  2 27 33 36 38 40 45 65 73 101 
+
+
+Start forward sequential feature selection:
+Initial columns included:  none
+Columns that can not be included:  none
+Step 1, added column 27, criterion value 0.331288
+Step 2, added column 36, criterion value 0.208589
+Step 3, added column 41, criterion value 0.153374
+Step 4, added column 73, criterion value 0.122699
+Step 5, added column 46, criterion value 0.0797546
+Step 6, added column 1, criterion value 0.0736196
+Final columns included:  1 27 36 41 46 73 
